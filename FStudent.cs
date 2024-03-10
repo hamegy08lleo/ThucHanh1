@@ -21,13 +21,15 @@ namespace ThucHanh1
         {
             InitializeComponent();
             ucStudent.BtnAdd.Click += BtnAdd;
-            ucStudent.GvData.CellContentClick += CellClick; 
-            
+            ucStudent.GvData.CellContentClick += CellClick;
+            ucStudent.BtnDelete.Click += BtnDelete;
+            ucStudent.BtnEdit.Click += BtnEdit;
+            BtnChangeToTeacher.Click += BtnChangeTeacherForm_Click;
         }
 
-        private void ucInfomartion1_Load(object sender, EventArgs e)
+        private void BtnDelete_Click(object sender, EventArgs e)
         {
-
+            throw new NotImplementedException();
         }
 
         private void FStudent_Load(object sender, EventArgs e)
@@ -37,14 +39,15 @@ namespace ThucHanh1
         }
         public void GetDataFromUC()
         {
-            student = new Student(ucStudent.TxtFullName.Text, ucStudent.TxtAddress.Text, ucStudent.CbSex.Text, ucStudent.TxtGovernmentID.Text, ucStudent.TxtPhoneNumber.Text, ucStudent.TxtEmail.Text, ucStudent.DtBirthdate.Value);
+            student = new Student(ucStudent.TxtFullName.Text, ucStudent.TxtAddress.Text, ucStudent.CbSex.Text, ucStudent.TxtGovernmentID.Text, ucStudent.TxtPhoneNumber.Text, ucStudent.TxtEmail.Text, ucStudent.DtBirthdate.Value, ucStudent.LblIDValue.Text);
         }
         private void BtnAdd(object sender, EventArgs e)
         {
             try {
                 GetDataFromUC();
                 studentDAO.Add(student);
-                FStudent_Load(sender, e); 
+                FStudent_Load(sender, e);
+                Clear(); 
             }
             catch(Exception ex)
             {
@@ -56,13 +59,38 @@ namespace ThucHanh1
             try
             {
                 GetDataFromUC();
-                studentDAO.Delete(student); 
+                studentDAO.Delete(student.Id); 
                 FStudent_Load(sender, e);
+                Clear(); 
             }
             catch(Exception ex)
             {
                 MessageBox.Show("Error: " + ex.Message);
             }
+        }
+        private void BtnEdit(object sender, EventArgs e)
+        {
+            try
+            {
+                GetDataFromUC();
+                studentDAO.Update(student);
+                FStudent_Load(sender, e);
+                Clear();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
+        }
+        public void Clear()
+        {
+            ucStudent.TxtAddress.Clear();
+            ucStudent.TxtFullName.Clear();
+            ucStudent.TxtPhoneNumber.Clear();
+            ucStudent.LblIDValue.Text = "";
+            ucStudent.TxtGovernmentID.Text = ""; 
+            ucStudent.TxtEmail.Text = "";
+            ucStudent.CbSex.Text = "";
         }
         public void LoadDataFromRow(DataGridViewRow row)
         {
@@ -79,6 +107,12 @@ namespace ThucHanh1
         {
 
             LoadDataFromRow(ucStudent.GvData.SelectedRows[0]);
+        }
+        private void BtnChangeTeacherForm_Click(object sender, EventArgs e)
+        {
+            FTeacher fTeacher = new FTeacher();
+            fTeacher.Show();
+            this.Hide();
         }
     }
 }

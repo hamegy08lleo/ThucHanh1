@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ThucHanh1
 {
@@ -26,12 +27,18 @@ namespace ThucHanh1
         }
         public void Add(Person person)
         {
-            String sqlStr = $"INSERT INTO STUDENT(fullName, address, phoneNumber, email, governmentID, sex, dateOfBirth) VALUES ('{person.Name}', '{person.Address}', '{person.PhoneNumber}', '{person.Email}', '{person.GovernmentID}', '{person.Sex}', '{person.BirthDate}')";
+            String sqlStr = $"INSERT INTO {tableName}(fullName, address, phoneNumber, email, governmentID, sex, dateOfBirth) VALUES ('{person.Name}', '{person.Address}', '{person.PhoneNumber}', '{person.Email}', '{person.GovernmentID}', '{person.Sex}', '{person.BirthDate}')";
             dbConnnection.CommandExecute(sqlStr);
         }
-        public void Delete(Person person)
+        public void Delete(string id)
         {
-            String sqlStr = $"DELETE "
+            String sqlStr = $"DELETE FROM {tableName} WHERE id = '{id}'";
+            dbConnnection.CommandExecute(sqlStr);
+        }
+        public void Update(Person person)
+        {
+            String sqlStr = $"UPDATE {tableName} SET fullName = '{person.Name}', address = '{person.Address}', phoneNumber = '{person.PhoneNumber}', email = '{person.Email}', governmentID = '{person.GovernmentID}', sex = '{person.Sex}', dateOfBirth = '{person.BirthDate.ToString()}' WHERE id = '{person.Id.ToString()}'";
+            dbConnnection.CommandExecute(sqlStr);
         }
     }
 }

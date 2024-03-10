@@ -16,7 +16,5 @@ namespace ThucHanh1
         {
             InitializeComponent();
         }
-
-
     }
 }
